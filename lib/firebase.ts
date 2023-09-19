@@ -219,7 +219,7 @@ export default class Firebase {
   async uploadFile(file: File, inspection_id: string, requirement: string) {
     const storageRef = ref(
       storage,
-      `files/${inspection_id}/${requirement}-${file.name}}`
+      `files/${inspection_id}/${requirement}-${file.name}`
     );
     const uploadTask = uploadBytesResumable(storageRef, file);
 

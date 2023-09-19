@@ -78,12 +78,17 @@ export default function NIM({ params }: { params: { unique_id: string } }) {
 
         const newInspectionData = {
           ...inspectionData,
-          inspection_task: "Review Inspection Requirements",
+          inspection_task: `Review Inspection Requirements <${formatDateToDash(
+            new Date(Date.now() + 3 * 24 * 60 * 60 * 1000)
+          )}>`,
         };
 
         await firebase.updateInspection(inspectionData);
 
         setInspectionData(newInspectionData);
+
+        //Create log
+        
 
         setIsLoading(false);
       })
@@ -358,4 +363,11 @@ function formatDate(dateString: string) {
 
   // Return formatted date string
   return `${dayName}, ${year}/${month}/${day}`;
+}
+
+function formatDateToDash(dateObj: Date) {
+  const year = dateObj.getFullYear();
+  const month = String(dateObj.getMonth() + 1).padStart(2, "0"); // Months are 0-based
+  const day = String(dateObj.getDate()).padStart(2, "0");
+  return `${year}-${day}-${month}`;
 }
