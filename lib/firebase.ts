@@ -51,7 +51,7 @@ export default class Firebase {
   //GET: Checks if the link object in the database
   //returns the link object if it exists
   async getLinkObjectById(id: string) {
-    const docRef = doc(db, "links", id);
+    const docRef = doc(db, "expiring_links", id);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
       return docSnap.data();
@@ -190,6 +190,31 @@ export default class Firebase {
     }
   }
 
+  //DELETE: Deletes expiring link from database
+  async deleteLinkObjectById(id: string) {
+    try {
+      const docRef = doc(db, "expiring_links", id);
+      await deleteDoc(docRef);
+      return true;
+    } catch (error) {
+      console.log("No such document!");
+      return null;
+    }
+  }
+
+  //PUT: Update inspection
+  //Returns 200 if successful, 400 if there is an error.
+  async updateInspection(inspection: Inspection) {
+    try {
+      const docRef = doc(db, "inspections", inspection.inspection_id);
+      await updateDoc(docRef, { ...inspection });
+      return { status: 200, inspection: inspection };
+    } catch (error) {
+      console.log(error);
+      return { status: 400 };
+    }
+  }
+
   //Storage: Uploads the file to the storage bucket
   async uploadFile(file: File, inspection_id: string, requirement: string) {
     const storageRef = ref(
@@ -197,15 +222,46 @@ export default class Firebase {
       `files/${inspection_id}/${requirement}-${file.name}}`
     );
     const uploadTask = uploadBytesResumable(storageRef, file);
-    uploadTask.on(
-      "state_changed",
-      (snapshot) => {},
-      (error) => alert(`${error} - Failed to upload file.`),
-      async () => {
-        await getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          return downloadURL;
-        });
-      }
-    );
+
+    // Wrap the uploadTask inside a new Promise
+    await new Promise<void>((resolve, reject) => {
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {},
+        (error) => {
+          alert(`${error} - Failed to upload file.`);
+          reject(error); // Reject the promise on error
+        },
+        async () => {
+          await getDownloadURL(uploadTask.snapshot.ref).then(
+            async (downloadURL) => {
+              // Fetch the current document
+              const inspectionDoc = doc(db, "inspections", inspection_id);
+              const currentData = await getDoc(inspectionDoc);
+
+              // Get the current array of downloadURLs or initialize it if it doesn't exist
+              let currentURLs =
+                currentData.data()?.requirements?.[requirement] || [];
+
+              // Append the new downloadURL to the array
+              currentURLs.push(downloadURL);
+
+              // Update the document with the new array
+              await setDoc(
+                inspectionDoc,
+                {
+                  requirements: {
+                    [requirement]: currentURLs,
+                  },
+                },
+                { merge: true }
+              );
+
+              resolve(); // Resolve the promise once the upload and update are done
+            }
+          );
+        }
+      );
+    });
   }
 }

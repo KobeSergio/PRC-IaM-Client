@@ -3,6 +3,7 @@ import { Client } from "./Client";
 import { OC } from "./OC";
 import { PRB } from "./PRB";
 import { RO } from "./RO";
+import { Requirements } from "./Requirements";
 
 export type Inspection = {
   inspection_id: string;
@@ -22,4 +23,5 @@ export type Inspection = {
   client_details: Client;
   ro_details: RO;
   status: string;
+  requirements: Requirements;
 };
