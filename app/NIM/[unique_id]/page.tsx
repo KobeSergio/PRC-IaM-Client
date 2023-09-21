@@ -10,6 +10,7 @@ import { PageSpinner, Spinner } from "@/components/Spinner";
 import { useDropzone } from "react-dropzone";
 import Dropzone from "@/components/Dropzone";
 import { ExpiringLink } from "@/types/ExpiringLink";
+import { Log } from "@/types/Log";
 
 const firebase = new Firebase();
 
@@ -88,7 +89,17 @@ export default function NIM({ params }: { params: { unique_id: string } }) {
         setInspectionData(newInspectionData);
 
         //Create log
-        
+        const log: Log = {
+          log_id: "",
+          timestamp: "",
+          client_details: inspectionData.client_details,
+          author_type: "",
+          author_id: "",
+          author_details: inspectionData.client_details,
+          action: "Acknowledged NIM by client",
+        };
+
+        await firebase.createLog(log, inspectionData.client_details.client_id);
 
         setIsLoading(false);
       })

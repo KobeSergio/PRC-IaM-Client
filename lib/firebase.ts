@@ -28,6 +28,7 @@ import { RO } from "@/types/RO";
 import { OC } from "@/types/OC";
 import { PRB } from "@/types/PRB";
 import { ACD } from "@/types/ACD";
+import { Log } from "@/types/Log";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -199,6 +200,25 @@ export default class Firebase {
     } catch (error) {
       console.log("No such document!");
       return null;
+    }
+  }
+
+  //POST: Create log
+  //Returns 200 if successful, 400 if there is an error.
+  async createLog(log: Log, user_id: string) {
+    try {
+      const docRef = await addDoc(collection(db, "logs"), {
+        ...log,
+      });
+      await updateDoc(docRef, {
+        log_id: docRef.id,
+        author_type: "client",
+        author_id: user_id,
+      });
+      return { status: 200 };
+    } catch (error) {
+      console.log(error);
+      return { status: 400 };
     }
   }
 
