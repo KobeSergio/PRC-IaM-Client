@@ -101,6 +101,24 @@ export default class Firebase {
     }
   }
 
+  async checkLatestInspection(client_id: string) {
+    try {
+      const q = query(
+        collection(db, "inspections"),
+        where("client_details.client_id", "==", client_id)
+      );
+      const querySnapshot = await getDocs(q);
+      const inspections: Inspection[] = [];
+      querySnapshot.forEach((doc) => {
+        inspections.push(doc.data() as Inspection);
+      });
+      return inspections;
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  }
+
   //GET: Get single client.
   //Returns client if successful, null if there is an error.
   async getClientDetails(client_id: string) {
