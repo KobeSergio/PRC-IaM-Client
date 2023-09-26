@@ -253,6 +253,16 @@ export default class Firebase {
     }
   }
 
+  async updateTask(task: any, inspection_id: string) {
+    try {
+      const docRef = doc(db, "inspections", inspection_id);
+      await updateDoc(docRef, { inspection_task: task });
+    } catch (error) {
+      console.log(error);
+      return { status: 400 };
+    }
+  }
+
   //Storage: Uploads the file to the storage bucket
   async uploadFile(file: File, inspection_id: string, requirement: string) {
     const storageRef = ref(

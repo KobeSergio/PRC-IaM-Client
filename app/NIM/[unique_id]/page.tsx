@@ -84,7 +84,12 @@ export default function NIM({ params }: { params: { unique_id: string } }) {
           )}>`,
         };
 
-        await firebase.updateInspection(inspectionData);
+        await firebase.updateTask(
+          `Review Inspection Requirements <${formatDateToDash(
+            new Date(Date.now() + 3 * 24 * 60 * 60 * 1000)
+          )}>`,
+          inspectionData.inspection_id
+        );
 
         setInspectionData(newInspectionData);
 
