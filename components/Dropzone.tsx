@@ -10,9 +10,34 @@ export default function Dropzone({
   handleFileChange: any; // Usestate setter
   files: any; // Usestate
 }) {
+  const accepts =
+    requirement == "vidPres"
+      ? {
+          "image/jpeg": [],
+          "image/png": [],
+          "image/jpg": [],
+        }
+      : {
+          "application/pdf": [],
+          docx: [],
+          doc: [],
+          "application/msword": [],
+          "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+            [],
+          "application/vnd.ms-excel": [],
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
+            [],
+          "application/vnd.ms-powerpoint": [],
+          "application/vnd.openxmlformats-officedocument.presentationml.presentation":
+            [],
+          "application/vnd.oasis.opendocument.text": [],
+          "application/vnd.oasis.opendocument.spreadsheet": [],
+          "application/vnd.oasis.opendocument.presentation": [],
+        };
+
   const { getRootProps, getInputProps, acceptedFiles, isDragActive } =
     useDropzone({
-      // ... (rest of the dropzone configuration)
+      accept: accepts as any,
     });
 
   useEffect(() => {
@@ -38,12 +63,16 @@ export default function Dropzone({
         <div className="py-4 border-t-black/20">
           <div className="flex flex-col items-center justify-center dropzone">
             <input {...getInputProps()} />
-            <p className="disable-text-selection text-sm w-full h-full text-black text-center">
+            <p className="disable-text-selection text-sm w-full h-full text-black text-center text-semibold font-monts">
               {isDragActive
                 ? "Drop the files here ..."
                 : files == undefined || files.length == 0
-                ? "Click to upload or drag and drop your files here."
-                : "Files uploaded:"}
+                ? `Click to upload or drag and drop your files here. Accepts: ${
+                    requirement == "vidPres"
+                      ? "jpg, jpeg, png"
+                      : "pdf, doc, docx, xls, xlsx, ppt, pptx, odt, ods, odp"
+                  }`
+                : "Files uploaded, check the list below."}
             </p>
           </div>
         </div>
