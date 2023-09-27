@@ -61,6 +61,27 @@ export default class Firebase {
     }
   }
 
+  //GET: Get all inspections
+  //Returns array of inspections if successful, null if there is an error.
+  async getInspections() {
+    try {
+      const querySnapshot = await getDocs(collection(db, "inspections"));
+      const inspections: any = [];
+      querySnapshot.forEach((doc) => {
+        const data = doc.data() as Inspection;
+        const clientName = data.client_details.name;
+        const clientType = data.client_details.type;
+        const clientAddress = data.client_details.address;
+        const clientId = data.client_details.client_id;
+        inspections.push({ clientName, clientType, clientAddress, clientId });
+      });
+      return inspections;
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  }
+
   //GET: Get single inspection.
   //Returns inspection if successful, null if there is an error.
   async getInspection(inspection_id: string) {
