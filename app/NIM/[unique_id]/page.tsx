@@ -175,42 +175,42 @@ export default function NIM({ params }: { params: { unique_id: string } }) {
     );
   }
 
-  // if (
-  //   inspectionData?.inspection_task?.toLowerCase() != "sent nim" &&
-  //   !isFetching
-  // ) {
-  //   return (
-  //     <>
-  //       <div className="flex flex-col py-12">
-  //         <div className="flex flex-col gap-2 justify-center items-center">
-  //           <Image
-  //             src={Logo}
-  //             width={92}
-  //             height={92}
-  //             alt="PRC Logo"
-  //             className="w-[62px] lg:w-[92px] h-[62px] lg:[92px]"
-  //           />
-  //           <div className="text-primaryBlue text-2xl text-center font-bold leading-tight lg:leading-loose tracking-tight">
-  //             PRC Inspection and Monitoring System
-  //           </div>
-  //         </div>
-  //         {/* Acknowledge NIM */}
-  //         <div className="flex max-h-screen justify-center items-center px-6 py-4">
-  //           <div className="w-full h-[60vh] bg-white border border-[#D5D7D8] flex items-center justify-center rounded-[10px] p-6 gap-2">
-  //             <h1 className="font-monts text-center text-lg text-darkerGray  ">
-  //               Thank you for submitting your requirements.
-  //               <br />
-  //               <br />
-  //               Expect the board to inspect your{" "}
-  //               <b>{inspectionData?.client_details?.type} </b>on{" "}
-  //               <b>{formatDate(inspectionData?.inspection_date)}</b>.
-  //             </h1>
-  //           </div>
-  //         </div>
-  //       </div>
-  //     </>
-  //   );
-  // }
+  if (
+    inspectionData?.inspection_task?.toLowerCase() != "sent nim" &&
+    !isFetching
+  ) {
+    return (
+      <>
+        <div className="flex flex-col py-12">
+          <div className="flex flex-col gap-2 justify-center items-center">
+            <Image
+              src={Logo}
+              width={92}
+              height={92}
+              alt="PRC Logo"
+              className="w-[62px] lg:w-[92px] h-[62px] lg:[92px]"
+            />
+            <div className="text-primaryBlue text-2xl text-center font-bold leading-tight lg:leading-loose tracking-tight">
+              PRC Inspection and Monitoring System
+            </div>
+          </div>
+          {/* Acknowledge NIM */}
+          <div className="flex max-h-screen justify-center items-center px-6 py-4">
+            <div className="w-full h-[60vh] bg-white border border-[#D5D7D8] flex items-center justify-center rounded-[10px] p-6 gap-2">
+              <h1 className="font-monts text-center text-lg text-darkerGray  ">
+                Thank you for submitting your requirements.
+                <br />
+                <br />
+                Expect the board to inspect your{" "}
+                <b>{inspectionData?.client_details?.type} </b>on{" "}
+                <b>{formatDate(inspectionData?.inspection_date)}</b>.
+              </h1>
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  }
 
   return (
     <div className="flex flex-col py-12">
