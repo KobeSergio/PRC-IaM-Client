@@ -176,12 +176,12 @@ export default function Home() {
                           <p className="flex items-center gap-2">
                             Compliant until:{" "}
                             {
-                              //Add 5 years to the fulfilledAt date
+                              //Add 3 years to the fulfilledAt date
                               formatDateToDash(
                                 new Date(
                                   new Date(record.fulfilledAt).setFullYear(
                                     new Date(record.fulfilledAt).getFullYear() +
-                                      5
+                                      3
                                   )
                                 )
                               )
