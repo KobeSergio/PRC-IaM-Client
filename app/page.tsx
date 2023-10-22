@@ -10,6 +10,12 @@ import { Inspection } from "@/types/Inspection";
 import { formatDateToDash } from "@/lib/formatDates";
 import Select from "react-select";
 
+import {
+  BsFillPatchCheckFill,
+  BsFillPatchMinusFill,
+  BsFillPatchExclamationFill,
+} from "react-icons/bs";
+
 const firebase = new Firebase();
 
 type Option = {
@@ -92,7 +98,7 @@ export default function Home() {
           <div className="text-primaryBlue text-2xl lg:text-[40px] text-center font-bold leading-tight lg:leading-loose tracking-tight">
             PRC Inspection and Monitoring System
           </div>
-          <div className="text-primaryBlue text-2xl  text-center font-bold leading-tight lg:leading-loose -mt-6 mb-4 tracking-tight">
+          <div className="text-primaryBlue text-2xl  text-center font-bold leading-tight lg:leading-loose lg:-mt-6 mb-4 tracking-tight">
             NUTRITION AND DIETETICS
           </div>
         </div>
@@ -102,13 +108,7 @@ export default function Home() {
           </div>
           <div className="relative flex items-center w-full md:w-1/2 lg:w-1/3">
             <RiSearchLine className="absolute left-3 fill-[#7C7C7C]" />
-            {/* <input
-              type="text"
-              onChange={(e) => setId(e.target.value)}
-              value={id}
-              className="pl-10 p-2.5 outline-none bg-white border border-[#D5D7D8] rounded-lg font-monts font-medium text-sm text-gray text-inherit w-full"
-              placeholder=""
-            /> */}
+
             <Select
               value={selectedOption}
               className="w-full"
@@ -144,7 +144,7 @@ export default function Home() {
                 </div>
               </div>
             ) : (
-              <div className="flex w-[60vw] flex-col gap-4">
+              <div className="flex w-full lg:w-[60vw] flex-col gap-4">
                 {" "}
                 <div className="w-full h-full lg:h-[30vh] bg-white border border-[#D5D7D8] flex flex-col  rounded-[10px] p-6 gap-4">
                   <h1 className="font-monts font-bold text-lg text-darkerGray">
@@ -153,11 +153,27 @@ export default function Home() {
                   <div className="flex flex-col lg:flex-row justify-between gap-4">
                     <div className="flex flex-col gap-2">
                       <h6 className="font-monts text-sm font-semibold text-darkGray">
-                        Compliance Status
+                        Establishment Name
                       </h6>
                       <p className="font-monts text-base font-semibold text-darkerGray">
+                        {record.client_details?.name}
+                      </p>
+                    </div>
+                    <div className="flex flex-col gap-2">
+                      <h6 className="font-monts text-sm font-semibold text-darkGray">
+                        Establishment address
+                      </h6>
+                      <p className="font-monts text-base font-semibold text-darkerGray">
+                        {record.client_details?.address}
+                      </p>
+                    </div>
+                    <div className="flex flex-col gap-2">
+                      <h6 className="font-monts text-sm font-semibold text-darkGray">
+                        Compliance Status
+                      </h6>
+                      <div className="font-monts text-base font-semibold text-darkerGray">
                         {record.status.toLowerCase() == "compliant" ? (
-                          <p className="text-green-700">
+                          <p className="flex items-center gap-2">
                             Compliant until:{" "}
                             {
                               //Add 5 years to the fulfilledAt date
@@ -170,118 +186,35 @@ export default function Home() {
                                 )
                               )
                             }
+                            <span>
+                              <BsFillPatchCheckFill color={"green"} size={24} />
+                            </span>
                           </p>
                         ) : record.status.toLowerCase() == "non-compliant" ? (
                           "Non-Compliant"
-                        ) : record.status.toLowerCase() == "pending" ? (
-                          "Pending Inspection"
+                        ) : record.status.toLowerCase() == "additional" ||
+                          record.status.toLowerCase() == "approved" ? (
+                          <p className="flex items-center gap-2 ">
+                            Pending Inspection{" "}
+                            <span>
+                              <BsFillPatchMinusFill size={24} />
+                            </span>
+                          </p>
                         ) : (
-                          "For Compliance"
+                          <p className="flex items-center gap-2 ">
+                            For Compliance
+                            <span>
+                              <BsFillPatchExclamationFill
+                                color={"red"}
+                                size={24}
+                              />
+                            </span>
+                          </p>
                         )}
-                      </p>
+                      </div>
                     </div>
-                    <div className="flex flex-col gap-2">
-                      <h6 className="font-monts text-sm font-semibold text-darkGray">
-                        Establishment Name
-                      </h6>
-                      <p className="font-monts text-base font-semibold text-darkerGray">
-                        {record.client_details?.name}
-                      </p>
-                    </div>
-                    {/* <div className="flex flex-col gap-2">
-                      <h6 className="font-monts text-sm font-semibold text-darkGray">
-                        Establishment Type
-                      </h6>
-                      <p className="font-monts text-base font-semibold text-darkerGray">
-                        {record.client_details?.type}
-                      </p>
-                    </div> */}
-                    <div className="flex flex-col gap-2">
-                      <h6 className="font-monts text-sm font-semibold text-darkGray">
-                        Establishment address
-                      </h6>
-                      <p className="font-monts text-base font-semibold text-darkerGray">
-                        {record.client_details?.address}
-                      </p>
-                    </div>
-                    {/* <div className="flex flex-col gap-2">
-                      <h6 className="font-monts text-sm font-semibold text-darkGray">
-                        Establishment Email
-                      </h6>
-                      <p className="font-monts text-sm font-semibold text-primaryBlue hover:underline">
-                        {record.client_details?.email}
-                      </p>
-                    </div> */}
                   </div>
                 </div>{" "}
-                {/* <div className="w-full h-full lg:h-[30vh] bg-white border border-[#D5D7D8] flex flex-col  rounded-[10px] p-6 gap-4">
-                  <h1 className="font-monts font-bold text-lg text-darkerGray">
-                    Inspection History
-                  </h1>
-                  <div className="flex flex-col lg:flex-row justify-between gap-4">
-                    <div className="flex flex-col gap-2">
-                      <h6 className="font-monts text-sm font-semibold text-darkGray">
-                        Establishment Name
-                      </h6>
-                      <p className="font-monts text-base font-semibold text-darkerGray">
-                        {record.client_details?.name}
-                      </p>
-                    </div>
-                    <div className="flex flex-col gap-2">
-                      <h6 className="font-monts text-sm font-semibold text-darkGray">
-                        Establishment Type
-                      </h6>
-                      <p className="font-monts text-base font-semibold text-darkerGray">
-                        {record.client_details?.type}
-                      </p>
-                    </div>
-                    <div className="flex flex-col gap-2">
-                      <h6 className="font-monts text-sm font-semibold text-darkGray">
-                        Establishment address
-                      </h6>
-                      <p className="font-monts text-base font-semibold text-darkerGray">
-                        {record.client_details?.address}
-                      </p>
-                    </div>
-                    <div className="flex flex-col gap-2">
-                      <h6 className="font-monts text-sm font-semibold text-darkGray">
-                        Establishment Email
-                      </h6>
-                      <p className="font-monts text-sm font-semibold text-primaryBlue hover:underline">
-                        {record.client_details?.email}
-                      </p>
-                    </div>
-                    <div className="flex flex-col gap-2">
-                      <h6 className="font-monts text-sm font-semibold text-darkGray">
-                        Compliant Status
-                      </h6>
-                      <p className="font-monts text-base font-semibold text-darkerGray">
-                        {record.status == "compliant" ? (
-                          <>
-                            Compliant until:{" "}
-                            {
-                              //Add 5 years to the fulfilledAt date
-                              formatDateToDash(
-                                new Date(
-                                  new Date(record.fulfilledAt).setFullYear(
-                                    new Date(record.fulfilledAt).getFullYear() +
-                                      5
-                                  )
-                                )
-                              )
-                            }
-                          </>
-                        ) : record.status == "non-compliant" ? (
-                          "Non-Compliant"
-                        ) : record.status == "pending" ? (
-                          "Pending Inspection"
-                        ) : (
-                          "For Compliance"
-                        )}
-                      </p>
-                    </div>
-                  </div>
-                </div> */}
               </div>
             )}
           </>
