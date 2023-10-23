@@ -117,6 +117,9 @@ export default function Home() {
               options={inputValue.length > 3 ? options : []}
               isSearchable={isFetching ? false : true}
               placeholder="Search..."
+              styles={{
+                dropdownIndicator: (base) => ({ ...base, display: "none" }),
+              }}
             />
             <button
               onClick={() => onSubmit()}
