@@ -1,4 +1,9 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {}
+const nextConfig = {
+  images: {
+    domains: ["www.prc.gov.ph"],
+    formats: ["image/webp"],
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

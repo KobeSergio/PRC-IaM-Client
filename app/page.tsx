@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Logo from "@/public/assets/images/prc_logo.svg";
+import BOND from "@/public/assets/images/bond_logo.png";
 import { RiSearchLine } from "react-icons/ri";
 import { useEffect, useState } from "react";
 import { Spinner } from "@/components/Spinner";
@@ -88,13 +89,15 @@ export default function Home() {
     <div className="flex flex-col">
       <div className="flex flex-col items-center justify-center max-md:gap-2 px-6 pt-12 lg:pt-24 pb-4">
         <div className="flex flex-col gap-2 justify-center items-center">
-          <Image
-            src={Logo}
-            width={92}
-            height={92}
-            alt="PRC Logo"
-            className="w-[62px] lg:w-[92px] h-[62px] lg:[92px]"
-          />
+          <div className="lg:flex hidden gap-12">
+            <Image src={Logo} width={120} height={120} alt="PRC Logo" />{" "}
+            <Image src={BOND} width={120} height={120} alt="BOND Logo" />
+          </div>
+          <div className="flex lg:hidden gap-4">
+            <Image src={Logo} width={60} height={60} alt="PRC Logo" />{" "}
+            <Image src={BOND} width={60} height={60} alt="BOND Logo" />
+          </div>
+
           <div className="text-primaryBlue text-2xl lg:text-[40px] text-center font-bold leading-tight lg:leading-loose tracking-tight">
             PRC Inspection and Monitoring System
           </div>
